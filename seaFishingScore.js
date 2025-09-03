@@ -1793,7 +1793,11 @@ const catchNotes        = document.getElementById('catch-notes');
     updateUndo();
 
     // Wire catch flow & session end
-    caughtOneBtn.addEventListener('click',startCatchFlow);
+       caughtOneBtn.addEventListener('click', () => {
+  const audio = new Audio('media/sounds/bell.wav');
+  audio.play();
+  startCatchFlow();
+});
     undoBtn.addEventListener('click',undoCatch);
     endSessionBtn.addEventListener('click',endSession);
 
@@ -2286,6 +2290,16 @@ methodContinueBtn.addEventListener('click', () => {
 
 // Step 5: Confirm Catch
 confirmCatchBtn.addEventListener('click', async () => {
+  // Play sound effect on confirm catch
+  let soundFile = 'media/sounds/caught.mp3';
+  if (currentAngler && currentAngler.name === 'Blake') {
+    // Randomly pick one of Blake's sounds
+    const blakeSounds = ['media/sounds/blake-bell.mp3', 'media/sounds/blake-caught.mp3'];
+    soundFile = blakeSounds[Math.floor(Math.random() * blakeSounds.length)];
+  }
+  const audio = new Audio(soundFile);
+  audio.play();
+  
   // Update session score & XP for the angler
   currentAngler.sessionScore = (currentAngler.sessionScore || 0) + finalScore;
   currentAngler.xp = (currentAngler.xp || 0) + xpGain;
@@ -2924,4 +2938,5 @@ function endSession() {
 
 endSessionBtn.removeEventListener('click', endSession);
 endSessionBtn.addEventListener('click', endSession);
+
 
